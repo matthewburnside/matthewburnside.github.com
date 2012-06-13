@@ -17,6 +17,7 @@
     }
     #map_canvas {
         height: 100%;
+		cursor: default;
     }
     #map_panel {
         position: absolute;
@@ -109,6 +110,7 @@ function init() {
         center: usa,
         zoom: 4,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
+		draggableCursor: "default",
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), m_opts);
     elevator = new google.maps.ElevationService();
@@ -210,7 +212,7 @@ function remove_segment(event) {
     update_all();
 }
 
-function plot_elevation(results) {
+function plot_elevation(results, status) {
     if (results == null)
         return;
 
