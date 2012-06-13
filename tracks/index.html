@@ -86,8 +86,7 @@ var track = [];
 var segments = [];
 var units = 'miles';
 var start_img, end_img, handle_img, marker_img;
-//var marker;
-var marker;
+var elev_marker;
 
 var start_img = new google.maps.MarkerImage(
     "http://maps.google.com/mapfiles/dd-start.png",
@@ -110,18 +109,21 @@ function init() {
         center: usa,
         zoom: 4,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        draggableCursor: 'pointer'
     };
     map = new google.maps.Map(document.getElementById("map_canvas"), m_opts);
     elevator = new google.maps.ElevationService();
     chart =new google.visualization.LineChart(document.getElementById('chart'));
-    marker = new google.maps.Marker({
+    elev_marker = new google.maps.Marker({
 			visible: false,
 			map: map,
 			icon: marker_img 
 		});
+    change_marker = new google.maps.Marker({
+			visible: false,
+			map: map,
+			icon: handle_img 
+		});
 
-	clear_elevation();
     google.maps.event.addListener(map, 'click', function (event) {
             add_segment(event);
 			update_all()
@@ -129,8 +131,8 @@ function init() {
 
     google.visualization.events.addListener(chart, 'onmouseover',
         function(event) {
-			marker.setPosition(elevations[event.row].location);
-			marker.setVisible(true);
+			elev_marker.setPosition(elevations[event.row].location);
+			elev_marker.setVisible(true);
 		});
     parse_url();
 }
@@ -158,6 +160,7 @@ function add_segment(event) {
             path: [track[track.length - 1].getPosition(), event.latLng],
             geodesic: true,
         });
+		
         segments.push(segment);
     }
     if (track.length > 1)
@@ -226,7 +229,7 @@ function plot_elevation(results) {
         titleY: 'Elevation (ft)',
         colors: ['#333333'],
 		height: 220,
-		chartArea: {width: 360},
+		chartArea: {width: 360, height: 140},
     });
 }
 
@@ -275,8 +278,6 @@ function undo() {
     remove_segment();
 }
 
-
-
 function permalink() {
     var loc = location.href.split('?')[0];
     var pathenc = google.maps.geometry.encoding.encodePath(get_latLngs());
@@ -306,6 +307,7 @@ function parse_url() {
     var args, params, equ, arr = [];
     var j;
 
+	clear_all();
     if (url.indexOf('?') == -1) // no arguments
         return;
 
@@ -360,7 +362,7 @@ function clear_all() {
 }
 
 function clear_marker() {
-	marker.setVisible(false);
+	elev_marker.setVisible(false);
 }
 
 function clear_elevation() {
@@ -372,7 +374,8 @@ function clear_elevation() {
         legend: 'none',
         titleY: 'Elevation (ft)',
         colors: ['black'],
-        vAxis: {minValue: 0, maxValue: 5000}
+		chartArea: {width: 360, height: 140},
+        vAxis: {minValue: 0, maxValue: 8000}
     });
 }
 
@@ -383,12 +386,10 @@ function clear_track() {
         track[i].setMap(null);
         track[i] = null;
     }
-
     for (i = 0; i < segments.length; i++) {
         segments[i].setMap(null);
         segments[i] = null;
     }
-
     track = [];
     segments = [];
 }
