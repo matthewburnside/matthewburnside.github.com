@@ -54,7 +54,6 @@ var s3 = function () {
                     function (m) { return ".thumb" + m; });
                 item.url = "http://" + my.bucket() + "/" + item.path;
                 item.thumb = "http://" + my.bucket() + "/" + item.thumbpath;
-                item.editable = false;
                 item.show = (item.show == "true" || item.show == true)
                     ? true
                     : false;
@@ -80,20 +79,8 @@ var s3 = function () {
             };
             switch (method) {
             case "read":
-//                options.url = this.get("path") + "manifest.json";
                 options.url = "http://" + my.bucket() + "/" 
                     + this.get("path") + "manifest.json";
-                break;
-            case "create": /* FALLTHROUGH */
-            case "update":
-                var p = "/" + BUCKET + "/" + PREFIX
-                    + encodeURIComponent(this.get("actual")) + "/manifest.json";
-                options.url = this.get("path") + "manifest.json"
-                    + this.get("auth").signature(p);
-                options.type = "PUT";
-                break;
-            case "delete":
-                console.log("unused method: delete");
                 break;
             }
             return Backbone.sync(method, model, options);
