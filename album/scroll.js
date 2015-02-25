@@ -19,6 +19,7 @@ var ScrollView = (function () {
             });
         },
         render: function () {
+            this.$el.html('');
             this.$el.append(this.template_header(this.model.toJSON()));
             this.$el.append(this.template_footer(this.model.toJSON()));
         },
@@ -35,32 +36,6 @@ var ScrollView = (function () {
                     this.$el.append(v.el);
             });
         }
-
-//         initialize: function () {
-//             this.scroll_horizon = 1024; // pixels
-//             this.scroll_init = 3;
-//             this.scroll_increment = 1;
-//             this.index = -1;
-//             this.more(this.scroll_init);
-//             _.bindAll(this, "handle_scroll");
-//             $(window).scroll(this.handle_scroll);
-//         },
-//         handle_scroll: function () {
-//             if (document.body.scrollHeight - $(window).scrollTop()
-//                 < this.scroll_horizon) {
-//                 this.more(this.scroll_increment);
-//             }
-//         },
-//         more: function (count) {
-//             for (var i = 0; i < count; i++) {
-//                 var m;
-//                 do {
-//                     m = this.model.at(++this.index);
-//                 } while (this.index < this.model.length && !m.get("show"));
-//                 var v = new Item({model: m});
-//                 this.$el.append(v.el);
-//             }
-//         }
     });
 
     Item = Backbone.View.extend({
@@ -95,6 +70,7 @@ var ListView = (function () {
             });
         },
         render: function () {
+            this.$el.html('');
             this.$el.append(this.template_header(this.model.toJSON()));
             this.$el.append(this.template_footer(this.model.toJSON()));
         },
