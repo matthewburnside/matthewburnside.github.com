@@ -15,7 +15,6 @@ var Login = Backbone.View.extend({
         this.model.on("login:ready", this.render, this);
         this.model.on("login:success", this.render, this);
         this.model.on("logout:success", this.render, this);
-        this.model.get_auth();
     },
     render: function () {
         var tmpl = this.model.get("login:success")
@@ -47,10 +46,6 @@ var EditView = (function () {
         template_footer: _.template($("#tmpl-footer").html()),
         initialize: function () {
             this.render();
-            this.login_view = new Login({
-                el: "#login",
-                model: this.model.get("auth")
-            });
             this.index_view = new Index({
                 el: "#index",
                 model: this.model.get("contents")
@@ -160,18 +155,10 @@ var ScrollView = (function () {
         initialize: function () {
             var that = this;
             this.render();
-            this.login_view = new Login({
-                el: "#login",
-                model: this.model.get("auth")
-            });
             this.index_view = new Index({
                 el: "#index",
                 model: this.model.get("contents")
             });
-            this.model.get("auth").on("login:success", function () {
-                router.navigate(this.model.get("display") + "/edit",
-                    {trigger: true});
-            }, this);
         },
         render: function () {
             this.$el.append(this.template_header(this.model.toJSON()));
@@ -220,34 +207,6 @@ var ScrollView = (function () {
             this.$el.html(this.template(this.model.toJSON()));
             if (this.model.get("show") == false)
                 this.$el.addClass("hide");
-        },
-    });
-
-    Login = Backbone.View.extend({
-        events: {
-            "keydown #password": "login_attempt" 
-        },
-        template_ready: _.template($("#tmpl-login-ready").html()),
-        template_success: _.template($("#tmpl-login-success").html()),
-        initialize: function () {
-            this.model.on("login:ready", this.render, this);
-            this.model.on("login:success", this.render, this);
-            this.model.on("logout:success", this.render, this);
-            this.model.get_auth();
-        },
-        render: function () {
-            var tmpl = this.model.get("login:success")
-                ? this.template_success
-                : this.template_ready;
-            this.$el.html(tmpl(this.model.toJSON())).fadeIn();
-        },
-        login_attempt: function () {
-            if (event.keyCode != 13)
-                return;
-            this.model.login({
-                username: $("#username").val(),
-                password: $("#password").val(),
-            });
         },
     });
 
@@ -314,8 +273,6 @@ var ScrollRouter = Backbone.Router.extend({
     },
     initialize: function () {
         this.manifest = new s3.Manifest();
-        this.auth = new s3.Auth();
-        this.manifest.set("auth", this.auth);
         this.listing = new s3.Listing();
     },
     path: function (model, path) {
@@ -341,23 +298,6 @@ var ScrollRouter = Backbone.Router.extend({
         this.manifest.fetch({
             success: function() {
                 that.scroll_view = new ScrollView({model: that.manifest});
-            },
-            error: function() {
-                $("#scroll").html("<h1>Not found: " + path + "</h1>");
-            }
-        });
-    },
-    edit: function (path) {
-//        if (!this.auth.get("login.success")) {
-//            router.navigate(path, {trigger: true});
-//            return;
-//        }
-
-        var that = this;
-        this.path(this.manifest, path);
-        this.manifest.fetch({
-            success: function() {
-                that.edit_view = new EditView({model: that.manifest});
             },
             error: function() {
                 $("#scroll").html("<h1>Not found: " + path + "</h1>");
