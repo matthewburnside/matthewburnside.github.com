@@ -50,9 +50,10 @@ var s3 = function () {
                 return;
             var contents = _.map(json.contents, function (item) {
                 item.path = this.get("path") + item.name;
-                item.url = "http://" + my.bucket() + "/" + item.path;
-                item.thumb = item.url + item.name.replace(/.jpg/i,
+                item.thumbpath = this.get("path") + item.name.replace(/.jpg/i,
                     function (m) { return ".thumb" + m; });
+                item.url = "http://" + my.bucket() + "/" + item.path;
+                item.thumb = "http://" + my.bucket() + "/" + item.thumbpath;
                 item.editable = false;
                 item.show = (item.show == "true" || item.show == true)
                     ? true
