@@ -15,37 +15,6 @@ var s3 = function () {
         return my;
     };
 
-	function _credential(username, passwd) {
-		return CryptoJS.SHA1(username + ":" + passwd)
-            .toString(CryptoJS.enc.Base64);
-	};
-	function _signer(data, passwd) {
-		var keys = JSON.parse(
-			CryptoJS.AES.decrypt(data, passwd).toString(CryptoJS.enc.Latin1));
-        return function (path) {
-            var AccessKey = keys["access_key"];
-            var SecretKey = keys["secret_key"];
-            var expires = Math.floor(new Date().getTime() / 1000) + 300;
-            var stringToSign = "PUT\n\napplication/json\n" + expires + "\n"
-                + path;
-            var signature =
-                CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(stringToSign,
-                    SecretKey));
-            return "?"
-                + "AWSAccessKeyId=" + AccessKey
-                + "&Expires=" + expires
-                + "&Signature=" + encodeURIComponent(signature);
-        }
-	};
-	function _encrypt_key(passwd, access_key, secret_key) {
-		var keys = {
-			"access_key": access_key,
-			"secret_key": secret_key
-		};
-		return CryptoJS.AES.encrypt(JSON.stringify(keys), passwd).toString();
-	};
-
-
     my.Listing = Backbone.Model.extend({
         url: function () {
             return "http://" + my.bucket() + "?delimiter=/&prefix="+my.prefix();
@@ -73,82 +42,9 @@ var s3 = function () {
         }
     });
 
-    my.Auth = Backbone.Model.extend({
-        dataType: "json",
-        url: "/auth.json",
-        initialize: function () {
-            this.set("login:ready", false);
-            this.set("login:success", false);
-            this.set("signer", null);
-        },
-        get_auth: function () {
-            var that = this;
-            this.fetch({
-                success: function() {
-                    that.set("login:ready", true);
-                    that.trigger("login:ready");
-                }
-            });
-        },
-        // options: { username, password, success, error }
-        login: function(options) {
-            success = options.success || function () { return null; };
-            error = options.error || function () { return null; };
-            if (this.get("login:success")) {
-                success();
-                this.trigger("login:success");
-                return true;
-            }
-            var cred = _credential(options.username, options.password);
-            if (!this.has(cred)) {
-                error();
-                this.trigger("login:error");
-                return false;
-            }
-            this.set("signer", _signer(this.get(cred), options.password));
-            this.set("login:success", true);
-            this.set("username", options.username);
-            this.trigger("login:success");
-            success();
-            return true;
-        },
-        logout: function () {
-            this.set("login:success", false);
-            this.set("signer", null);
-            this.trigger("logout:success");
-        },
-        signature: function(path) {
-            if (!this.get("login:success")) {
-                return false;
-            }
-            return this.get("signer")(path);
-        },
-        // options: { username, password, access_key, secret_key }
-        new_user: function(options) {
-            var cred = _credential(options.username, options.password);
-            var key_cipher = _encrypt_key(options.password, options.access_key,
-                options.secret_key);
-            this.set(cred, key_cipher);
-        }
-    });
 
     my.Manifest = Backbone.Model.extend({
         dataType: "json",
-        save_manifest: function () {
-            var that = this;
-            this.trigger("manifest:saving");
-            this.save(null, {
-                data: JSON.stringify(this.toJSON()),
-                contentType: "application/json",
-                success: function () {
-                    that.trigger("manifest:saved");
-                },
-                error: function (model, xhr, options) {
-                    that.trigger("manifest:error");
-                    console.log(xhr.responseText);
-                }
-            });
-        },
         parse: function (json) {
             if (json.getResponseHeader)
                 return;
@@ -182,7 +78,9 @@ var s3 = function () {
             };
             switch (method) {
             case "read":
-                options.url = this.get("path") + "manifest.json";
+//                options.url = this.get("path") + "manifest.json";
+                options.url = "http://" + my.bucket() + "/" + my.prefix() + "/"
+                    + this.get("path") + "manifest.json";
                 break;
             case "create": /* FALLTHROUGH */
             case "update":
