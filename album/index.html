@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+<style>
+
+#header, #footer {
+    background-color: #202020;
+    color: #e8e8e8;
+    margin: 30px auto 0px auto;
+    padding: 45px;
+    width: 934px;
+}
+
+#title {
+    font-size: 40px;
+}
+
+#date {
+    font-size: 12px;
+    font-style: italic;
+}
+
+#login {
+    float: right;
+    font-size: 10px;
+}
+
+#login input {
+    font-size: 10px;
+    background-color: #2a2a2a;
+    color: #e8e8e8;
+    border: 1px solid #a8a8a8;
+}
+
+#index {
+    width: 1024px;
+    margin: 0px auto 0px auto;
+}
+
+.save {
+    cursor: pointer;
+}
+
+.item {
+    border: 2px solid black;
+    margin-top: 30px;
+    overflow: hidden;
+}
+
+.item img {
+    float: left;
+}
+
+.caption {
+    background-color: #202020;
+    color: #e8e8e8;
+    float: left;
+    font-size: 14px;
+    padding: 15px 30px 15px 30px;
+    width: 964px;
+}
+
+.caption:empty {
+    display: none;
+}
+
+.edit .caption:empty {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.edit.hide {
+    display: block;
+}
+
+.edit.hide img {
+    opacity: .25;
+}
+
+
+#dragging {
+    width: 1021px;
+    height: 50px;
+    border: 3px dotted black;
+    background-color: #808080;
+    opacity: .75;
+    z-index: 10000;
+    margin: 30px 0 0 0;
+}
+
+ .drop-hover:before {
+     content: " ";
+     border: 3px dotted gray;
+     width: 1021px;
+     height: 50px;
+     margin: 30px auto 0px auto;
+     display: table;
+ }
+
+</style>
+
+</head>
+<title>Scroll</title>
+</head>
+
+<body>
+</body>
+
+
+<!-- Templates -->
+<script type="text/template" id="tmpl-header">
+    <div id="header">
+        <div id="title"><%= title %></div>
+        <div id="date"><%= date %></div>
+        <div id="login"></div>
+    </div>
+    <div id="index"></div>
+</script>
+
+<script type="text/template" id="tmpl-login-ready">
+    Login <input id="username" type="text"></input>
+    Password <input id="password" type="password"></input>
+</script>
+
+<script type="text/template" id="tmpl-login-success">
+    <div class="logout">Logout <%= username %></div>
+    <div class="save">Save</div>
+</script>
+
+<script type="text/template" id="tmpl-scroll-image">
+    <a href="<%= path %>"><img src="<%= thumb %>"></a>
+    <div class="caption"><%= caption %></div>
+</script>
+
+<script type="text/template" id="tmpl-scroll-image-edit">
+    <div class="item">
+    <img src="<%= thumb %>">
+    <div class="caption" contentEditable="true"><%= caption %></div>
+    <div class="dropping"></div>
+    </div>
+</script>
+
+<script type="text/template" id="tmpl-list-item">
+    <a href="#<%= display %>"><%= display %></a>
+</script>
+
+<script type="text/template" id="tmpl-footer">
+    <div id="footer">
+    </div>
+</script>
+
+
+
+<!-- Libraries -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"></script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js"></script>
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
+<script type="text/javascript" src="s3.js"></script>
+<script type="text/javascript" src="scroll.js"></script>
+</body>
+</html>
