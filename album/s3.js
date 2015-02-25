@@ -82,13 +82,16 @@ var s3 = function () {
                 options.url = "http://" + my.bucket() + "/" 
                     + this.get("path") + "manifest.json";
                 break;
+            default:
+                console.log("unknown method");
+                break;
             }
             return Backbone.sync(method, model, options);
         },
         toJSON: function () {
             json = _.omit(this.attributes, "actual", "display", "path", "auth");
             json.contents = _.map(this.get("contents").toJSON(),function (item){
-                return _.omit(item, "thumb", "path", "editable");
+                return _.omit(item, "thumb", "path");
             });
             return json;
         },
