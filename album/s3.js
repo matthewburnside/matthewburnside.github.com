@@ -79,7 +79,7 @@ var s3 = function () {
             switch (method) {
             case "read":
 //                options.url = this.get("path") + "manifest.json";
-                options.url = "http://" + my.bucket() + "/" + my.prefix() + "/"
+                options.url = "http://" + my.bucket() + "/" 
                     + this.get("path") + "manifest.json";
                 break;
             case "create": /* FALLTHROUGH */
