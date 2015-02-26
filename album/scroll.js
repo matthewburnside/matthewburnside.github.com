@@ -33,8 +33,7 @@ var ScrollView = (function () {
         render: function () {
             this.model.each(function (item) {
                 if (item.get("show"))
-                    var v = new Item({model: item});
-                    this.$el.append(v.el);
+                    this.$el.append(new Item({ model: item }).render());
             });
         }
     });
