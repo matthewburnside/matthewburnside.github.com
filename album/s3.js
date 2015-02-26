@@ -39,7 +39,7 @@ var s3 = function () {
                 var path = item.match(/>([^<]+)</)[1]
                     .replace("<Prefix>", "").replace("</Prefix>", "");
                 return {
-                    "display": path.split("/")[1].replace(/ /g, "-"),
+                    "display": path.split("/")[1], // .replace(/ /g, "-"),
                     "path": path 
                 };
             });
