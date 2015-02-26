@@ -34,16 +34,15 @@ var s3 = function () {
             var re = /<Prefix>([^<].+?)<\/Prefix>/g;
             var va = str.match(re);
 
+            va.shift(); // remove the /photos dir that gets stuck at the start
             var d = va.map(function (item) {
-                var path = item // .match(/>([^<]+)</)[1]
-                    .replace("<Prefix>", "").replace("</Prefix>", "");
+                var path = item.replace("<Prefix>", "").replace("</Prefix>","");
                 return {
-                    "display": path.split("/")[1], // .replace(/ /g, "-"),
+                    "display": path.split("/")[1],
                     "path": path 
                 };
             });
 
-            d.shift(); // remove the /photos dir that gets stuck at the start
             d.sort(function (a, b) {
                 if (a.display > b.display) {
                     return -1;
