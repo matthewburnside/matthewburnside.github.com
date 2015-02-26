@@ -36,12 +36,13 @@ var s3 = function () {
             var va = str.match(re);
 
             var d = va.map(function (item) {
+                var path = item.match(/>([^<]+)</)[1]
+                    .replace("<Prefix>", "").replace("</Prefix>", "");
                 return {
-                    "display": item.match(/>([^<]+)</)[1],
-                    "path": item.replace("<Prefix>", "").replace("</Prefix>", "")
+                    "display": path.split("/")[1].replace(/ /g, "-"),
+                    "path": path 
                 };
             });
-
 
 //            $(xml).find("CommonPrefixes").each(function () {
 //                var path = $(this).find("Prefix").text();
