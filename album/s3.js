@@ -38,7 +38,7 @@ var s3 = function () {
             var d = va.map(function (item) {
                 return {
                     "display": item.match(/>([^<]+)</)[1],
-                    "path": item 
+                    "path": item.replace("<Prefix>", "").replace("</Prefix>", "")
                 };
             });
 
