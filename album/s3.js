@@ -30,13 +30,12 @@ var s3 = function () {
         },
 
         parse: function (xml) {
-//            var d = []
             var str = this.serialize(xml);
             var re = /<Prefix>([^<].+?)<\/Prefix>/g;
             var va = str.match(re);
 
             var d = va.map(function (item) {
-                var path = item.match(/>([^<]+)</)[1]
+                var path = item // .match(/>([^<]+)</)[1]
                     .replace("<Prefix>", "").replace("</Prefix>", "");
                 return {
                     "display": path.split("/")[1], // .replace(/ /g, "-"),
