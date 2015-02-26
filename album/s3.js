@@ -44,14 +44,7 @@ var s3 = function () {
                 };
             });
 
-//            $(xml).find("CommonPrefixes").each(function () {
-//                var path = $(this).find("Prefix").text();
-//                var display = path.split("/")[1].replace(/ /g, "-");
-//                d.push({
-//                    "display": display,
-//                    "path": path
-//                });
-//            });
+            d.shift(); // remove the /photos dir that gets stuck at the start
             d.sort(function (a, b) {
                 if (a.display > b.display) {
                     return -1;
