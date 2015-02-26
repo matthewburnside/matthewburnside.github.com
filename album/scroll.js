@@ -12,6 +12,7 @@ var ScrollView = (function () {
         template_footer: _.template($("#tmpl-footer").html()),
         initialize: function () {
             var that = this;
+            this.$el.empty();
             this.render();
             this.index_view = new Index({
                 el: "#index",
@@ -19,7 +20,6 @@ var ScrollView = (function () {
             });
         },
         render: function () {
-            this.$el.html('');
             this.$el.append(this.template_header(this.model.toJSON()));
             this.$el.append(this.template_footer(this.model.toJSON()));
         },
