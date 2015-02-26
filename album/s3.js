@@ -29,6 +29,16 @@ var s3 = function () {
                     "path": path
                 });
             });
+            d.sort(function (a, b) {
+                if (a.display > b.display) {
+                    return 1;
+                }
+                if (a.display < b.display) {
+                    return -1;
+                }
+                // a must be equal to b
+                return 0;
+            });
             return {
                 "title": "Listing",
                 "date": "",
