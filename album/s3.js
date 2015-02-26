@@ -20,15 +20,22 @@ var s3 = function () {
             return "http://" + my.bucket() + "?delimiter=/&prefix="+my.prefix();
         },
         parse: function (xml) {
-            var d = [];
-            $(xml).find("CommonPrefixes").each(function () {
-                var path = $(this).find("Prefix").text();
-                var display = path.split("/")[1].replace(/ /g, "-");
-                d.push({
-                    "display": display,
-                    "path": path
-                });
-            });
+//            var d = [];
+
+            var re = /<Prefix>.*<\/Prefix>/g;
+            var d = xml.match(re);
+            console.log(d);
+
+
+
+//            $(xml).find("CommonPrefixes").each(function () {
+//                var path = $(this).find("Prefix").text();
+//                var display = path.split("/")[1].replace(/ /g, "-");
+//                d.push({
+//                    "display": display,
+//                    "path": path
+//                });
+//            });
             d.sort(function (a, b) {
                 if (a.display > b.display) {
                     return -1;
