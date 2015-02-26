@@ -18,6 +18,7 @@ var ScrollView = (function () {
                 el: "#index",
                 model: this.model.get("contents")
             });
+            this.index_view.render();
         },
         render: function () {
             this.$el.append(this.template_header(this.model.toJSON()));
