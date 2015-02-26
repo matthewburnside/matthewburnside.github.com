@@ -31,9 +31,10 @@ var ScrollView = (function () {
         tagName: "ol",
 
         render: function () {
+            that = this;
             this.model.each(function (item) {
                 if (item.get("show"))
-                    this.$el.append(new Item({ model: item }).render());
+                    that.$el.append(new Item({ model: item }).render());
             });
         }
     });
