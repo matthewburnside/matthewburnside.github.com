@@ -32,7 +32,7 @@ var s3 = function () {
         parse: function (xml) {
 //            var d = []
             var str = this.serialize(xml);
-            var re = /<Prefix>.*<\/Prefix>/g;
+            var re = /<Prefix>(.+?)<\/Prefix>/g;
             var d = str.match(re);
             console.log(d);
 
