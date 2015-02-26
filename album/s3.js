@@ -33,9 +33,14 @@ var s3 = function () {
 //            var d = []
             var str = this.serialize(xml);
             var re = /<Prefix>([^<].+?)<\/Prefix>/g;
-            var d = str.match(re);
-            console.log(d);
+            var va = str.match(re);
 
+            var d = va.map(function (item) {
+                return {
+                    "display": item.match(/>([^<]+)</)[1],
+                    "path": item 
+                };
+            });
 
 
 //            $(xml).find("CommonPrefixes").each(function () {
