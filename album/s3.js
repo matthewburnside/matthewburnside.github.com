@@ -54,7 +54,7 @@ var s3 = function () {
                 return 0;
             });
             return {
-                "title": "Listing",
+                "title": "Albums",
                 "date": "",
                 "directories": new Backbone.Collection(d)
             };
