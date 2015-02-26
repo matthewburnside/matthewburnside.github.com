@@ -19,20 +19,19 @@ var s3 = function () {
         url: function () {
             return "http://" + my.bucket() + "?delimiter=/&prefix="+my.prefix();
         },
+
+        serialize: function(xml) {
+            if (typeof window.XMLSerializer != "undefined") {
+                return (new window.XMLSerializer()).serializeToString(xml);
+            } else if (typeof xml.xml != "undefined") {
+                return xml.xml;
+            }
+                return "";
+        },
+
         parse: function (xml) {
-
-            function serializeXmlNode(xmlNode) {
-                if (typeof window.XMLSerializer != "undefined") {
-                    return
-                        (new window.XMLSerializer()).serializeToString(xmlNode);
-                } else if (typeof xmlNode.xml != "undefined") {
-                    return xmlNode.xml;
-                }
-                    return "";
-                };
-
 //            var d = []
-            var str = serializeXmlNode(xml);
+            var str = this.serialize(xml);
             var re = /<Prefix>.*<\/Prefix>/g;
             var d = str.match(re);
             console.log(d);
