@@ -392,17 +392,16 @@ function clear_track() {
 
 
 function kml() {
-	alert( '<?xml version="1.0" encoding="UTF-8"?>\n \
+	alert( '\t<?xml version="1.0" encoding="UTF-8"?>\n \
  	<kml xmlns="http://earth.google.com/kml/2.1">\n \
  	<Document>\n \
  	<Placemark>\n \
- 		<name>Tracks</name>\n \
  		<LineString>\n \
  			<coordinates>\n'
 
 	+ track.map(function (handle) {
 		var pos = handle.getPosition();
-		return pos.lng().toFixed(4) + "," + pos.lat().toFixed(4);
+		return '\t\t\t\t' + pos.lng().toFixed(4) + "," + pos.lat().toFixed(4);
 	}).join('\n')
 
 	+ '\n \
