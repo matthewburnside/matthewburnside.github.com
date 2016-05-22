@@ -411,7 +411,8 @@ function kml() {
 
     var poly = track.map(function (handle) {
 		var pos = handle.getPosition();
-		return "a" + pos.lat().toFixed(4) + "," + pos.lng().toFixed(4) + "\n";
+		alert(pos);
+		return pos.lat().toFixed(4) + "," + pos.lng().toFixed(4) + "\n";
 	});
 
 	var ftr = '\n \
