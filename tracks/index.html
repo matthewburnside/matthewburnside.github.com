@@ -392,33 +392,33 @@ function clear_track() {
 
 
 function kml() {
-	var hdr = '<?xml version="1.0" encoding="UTF-8"?>\n
-	<kml xmlns="http://earth.google.com/kml/2.1">\n
-	<Document>\n
-	<name>Track</name>\n
-	<description></description>\n\n
-	<Style id="style1">\n
-	<LineStyle>\n
-		<color>ffffffff</color>\n
-		<width>e</width>\n
-	</LineStyle>\n
-	</Style>\n
-	<Placemark>\n
-		<name>Tracks</name>\n
-		<styleUrl>#style1</styleUrl>\n
-		<LineString>\n
-			<coordinates>\n';
+	var hdr = '<?xml version="1.0" encoding="UTF-8"?>\n \
+ 	<kml xmlns="http://earth.google.com/kml/2.1">\n \
+ 	<Document>\n \
+ 	<name>Track</name>\n \
+ 	<description></description>\n\n \
+ 	<Style id="style1">\n \
+ 	<LineStyle>\n \
+ 		<color>ffffffff</color>\n \
+ 		<width>e</width>\n \
+ 	</LineStyle>\n \
+ 	</Style>\n \
+ 	<Placemark>\n \
+ 		<name>Tracks</name>\n \
+ 		<styleUrl>#style1</styleUrl>\n \
+ 		<LineString>\n \
+ 			<coordinates>\n';
 
     var poly = track.map(function (handle) {
 		var pos = handle.getPosition();
-		return pos.lat().toFixed(4) + "," pos.lng().toFixed(4) + "\n";
+		return pos.lat().toFixed(4) + "," + pos.lng().toFixed(4) + "\n";
 	});
 
-	var ftr = '\n
-			</coordinates>\n
-		</LineString>\n
-	</Placemark>\n
-	</Document>\n
+	var ftr = '\n \
+			</coordinates>\n \
+		</LineString>\n \
+	</Placemark>\n \
+	</Document>\n \
 	</kml>';
 
 	alert(hdr + poly + ftr);
