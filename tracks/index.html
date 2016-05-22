@@ -389,6 +389,60 @@ function clear_track() {
     segments = [];
 }
 
+function blah_kml() {
+	var kml_header = '<?xml version="1.0" encoding="UTF-8"?>\n
+			<kml xmlns="http://earth.google.com/kml/2.1">\n
+			<Document>\n
+			<name>'+document.getElementById("kml_name").value+'</name>\n
+			<description>' + document.getElementById("kml_desc").value + \
+			'</description>';
+	var kml_footer = '\n </Document>\n</kml>';
+	var polyline_data = '';
+	for(var i = 0; i < polyline_count; i++) {  //alert(kml_polyline_data[i]);
+		polyline_data += kml_polyline_data[i];
+	}
+	document.getElementById("geocode").value = kml_header + polyline_data + \
+		kml_footer;
+	document.getElementById("geocode").select();
+}
+
+
+
+function kml() {
+	var hdr = '<?xml version="1.0" encoding="UTF-8"?>\n
+	<kml xmlns="http://earth.google.com/kml/2.1">\n
+	<Document>\n
+	<name>Track</name>\n
+	<description></description>\n\n
+	<Style id="style1">\n
+	<LineStyle>\n
+		<color>ffffffff</color>\n
+		<width>e</width>\n
+	</LineStyle>\n
+	</Style>\n
+	<Placemark>\n
+		<name>Tracks</name>\n
+		<styleUrl>#style1</styleUrl>\n
+		<LineString>\n
+			<coordinates>\n';
+
+    var poly = track.map(function (handle) {
+		var pos = handle.getPosition();
+		return pos.lat().toFixed(4) + "," pos.lng().toFixed(4) + "\n";
+	});
+
+	var ftr = '\n
+			</coordinates>\n
+		</LineString>\n
+	</Placemark>\n
+	</Document>\n
+	</kml>';
+
+	alert(hdr + poly + ftr);
+}
+
+
+
 
 </script>
 
@@ -407,6 +461,10 @@ function clear_track() {
 			<a href="javascript:clear_all()">
 				<span style="text-decoration:underline">Clear</span>
 			</a> &nbsp;
+
+			<a href="javascript:kml()">
+				<span style="text-decoration:underline">KML</span>
+			</a>
 
 			<a href="javascript:permalink()">
 				<span style="text-decoration:underline">Share</span>
