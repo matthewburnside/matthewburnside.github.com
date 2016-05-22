@@ -402,8 +402,8 @@ function kml() {
 
 	+ track.map(function (handle) {
 		var pos = handle.getPosition();
-		return pos.lng().toFixed(4) + "," + pos.lat().toFixed(4) + "\n";
-	}).join('')
+		return pos.lng().toFixed(4) + "," + pos.lat().toFixed(4);
+	}).join('\n')
 
 	+ '\n \
 			</coordinates>\n \
