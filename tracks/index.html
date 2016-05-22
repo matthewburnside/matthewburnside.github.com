@@ -391,25 +391,46 @@ function clear_track() {
 
 
 
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
 function kml() {
-	alert( '\t<?xml version="1.0" encoding="UTF-8"?>\n \
+	var kml_text = '\t<?xml version="1.0" encoding="UTF-8"?>\n \
  	<kml xmlns="http://earth.google.com/kml/2.1">\n \
  	<Document>\n \
  	<Placemark>\n \
  		<LineString>\n \
  			<coordinates>\n'
-
 	+ track.map(function (handle) {
 		var pos = handle.getPosition();
 		return '\t\t\t\t' + pos.lng().toFixed(4) + "," + pos.lat().toFixed(4);
 	}).join('\n')
-
 	+ '\n \
 			</coordinates>\n \
 		</LineString>\n \
 	</Placemark>\n \
 	</Document>\n \
 	</kml>' );
+
+	var e = document.createElement('a');
+	e.setAttribute('href',
+		'data:text/plain;charset=utf-8,' + encodeURIComponent(kml_text));
+	e.setAttribute('download', 'tracks.kml');
+	e.style.display = 'none';
+	document.body.appendChild(e);
+	e.click();
+	document.body.removeChild(e);
 }
 
 
